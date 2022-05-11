@@ -50,6 +50,7 @@
             ],
             "indent": ["error", 2],
             "max-len": ["error", 120],
+            "no-spaced-func": "off",
             "no-async-promise-executor": "off",
             "no-bitwise": [
               "error",
