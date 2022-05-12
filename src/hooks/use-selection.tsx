@@ -1,15 +1,12 @@
-import React, { useContext, useCallback, MouseEventHandler } from 'react';
+import React, {
+  useRef, useContext, useCallback, MouseEventHandler, useEffect,
+} from 'react';
 import {
   Editor, Range, NodeEntry, Node, Text,
 } from 'slate';
 import { ReactEditor } from 'slate-react';
 import { useHighlightSlate, HighlightEditor } from './use-highlight-slate';
-
-/**
- * @todo
- * Move to other file
- */
-type Select = 'SELECTED' | 'DE_SELECTED';
+import type { Select } from '../components/highlightLeaf';
 
 export const SelectedTextContext = React.createContext<[string, (s: string) => void]>(null);
 export const UnDecorateListContext = React.createContext<[Range[], (r: Range[]) => void]>(null);
@@ -58,6 +55,7 @@ export const useSelection = () => {
   const selectedTextContext = useContext(SelectedTextContext);
   const unDecorateListContext = useContext(UnDecorateListContext);
   const editor = useHighlightSlate();
+  const ref = useRef<HTMLDivElement>(null);
 
   if (!selectedTextContext || !unDecorateListContext) {
     throw new Error('The `useSelection` hook must be used inside the <HighlightSlate> component\'s context.');
@@ -120,7 +118,7 @@ export const useSelection = () => {
             } else {
               ranges.push({
                 ...range,
-                select: 'DE_SELECTED',
+                select: 'DESELECTED',
               });
             }
           }
@@ -136,8 +134,35 @@ export const useSelection = () => {
     [selectedText, unDecorateList],
   );
 
+  /**
+   * @todo
+   * Deal with Leaf event bubble
+   */
+  useEffect(() => {
+    if (!ref.current) return () => {};
+
+    const { current: node } = ref;
+
+    const mouseDownHandler = (event: MouseEvent) => {
+      console.log('event-->\n', event);
+    };
+
+    node.addEventListener('mousedown', mouseDownHandler, false);
+
+    return () => {
+      node.removeEventListener('mousedown', mouseDownHandler, false);
+    };
+  }, []);
+
+  const EditableWrapper = ({ children }: { children: React.ReactNode }) => (
+    <div id="Editable-Wrapper" ref={ref}>
+      {children}
+    </div>
+  );
+
   return {
     createMouseUpHandler,
     createDecorate,
+    EditableWrapper,
   };
 };
