@@ -52,6 +52,7 @@
             "max-len": ["error", 120],
             "no-spaced-func": "off",
             "no-async-promise-executor": "off",
+            "no-extra-boolean-cast": "off",
             "no-bitwise": [
               "error",
               {

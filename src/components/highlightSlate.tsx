@@ -7,17 +7,22 @@ export type HighlightSlateProps = {
     selectedText?: string;
     unDecorated?: Range[];
   };
+  setSelected?: (txt: string) => void;
 };
 
 export type IHighlightSlate = PropsWithChildren<HighlightSlateProps>;
 
+/**
+ *
+ * @param props IHighlightSlate
+ * @returns Initialized Provider JSX component
+ */
 const HighlightSlate = (props: IHighlightSlate) => {
-  const { initialValue, children } = props;
-  const [selectedTxt, setSelected] = useState(initialValue?.selectedText || '');
+  const { initialValue, children, setSelected } = props;
   const [unDecoratedList, setUnDecorated] = useState(initialValue?.unDecorated || []);
 
   return (
-    <SelectedTextContext.Provider value={[selectedTxt, setSelected]}>
+    <SelectedTextContext.Provider value={[initialValue?.selectedText || '', setSelected]}>
       <UnDecorateListContext.Provider value={[unDecoratedList, setUnDecorated]}>
         {children}
       </UnDecorateListContext.Provider>
@@ -27,6 +32,7 @@ const HighlightSlate = (props: IHighlightSlate) => {
 
 HighlightSlate.defaultProps = {
   initialValue: null,
+  setSelected: null,
 };
 
 export default HighlightSlate;
