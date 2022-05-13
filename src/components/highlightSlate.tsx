@@ -17,7 +17,7 @@ export type IHighlightSlate = PropsWithChildren<HighlightSlateProps>;
  * @param props IHighlightSlate
  * @returns Initialized Provider JSX component
  */
-const HighlightSlate = (props: IHighlightSlate) => {
+export const HighlightSlate = (props: IHighlightSlate) => {
   const { initialValue, children, setSelected } = props;
   const [unDecoratedList, setUnDecorated] = useState(initialValue?.unDecorated || []);
 
@@ -34,5 +34,3 @@ HighlightSlate.defaultProps = {
   initialValue: null,
   setSelected: null,
 };
-
-export default HighlightSlate;

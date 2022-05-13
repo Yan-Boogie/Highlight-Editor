@@ -18,7 +18,7 @@
     "lib": ["es2019", "dom"],
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
-    "baseUrl": "."
+    "baseUrl": "./"
   },
   "exclude": ["node_modules"]
 }

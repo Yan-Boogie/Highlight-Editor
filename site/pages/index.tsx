@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react';
 import { createEditor, Descendant } from 'slate';
 import { Slate, withReact, Editable } from 'slate-react';
 import { withHistory } from 'slate-history';
+import {} from '@src/index';
 import SlateElement from '../components/slateElement';
 
 const initialValue: Descendant[] = [

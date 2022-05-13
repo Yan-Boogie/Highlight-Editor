@@ -18,7 +18,7 @@ export interface IHighlightLeaf extends RenderLeafProps {
   children: (leafProps: Partial<RenderLeafProps>) => React.ReactNode;
 }
 
-const HighlightLeaf = (props: IHighlightLeaf) => {
+export const HighlightLeaf = (props: IHighlightLeaf) => {
   const { attributes, children, leaf } = props;
 
   if (!isHighlightLeaf(leaf)) {
@@ -35,5 +35,3 @@ const HighlightLeaf = (props: IHighlightLeaf) => {
     </span>
   );
 };
-
-export default HighlightLeaf;
