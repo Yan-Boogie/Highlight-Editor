@@ -4,16 +4,12 @@ import { useSelection } from 'skyeye-highlight-editor';
 import SlateElement from '../slateElement';
 
 const SlateEditor = () => {
-  const { createMouseUpHandler, createDecorate, EditableWrapper } = useSelection();
+  const { createDecorate, createMouseHandlers } = useSelection();
 
   const decorate = createDecorate({});
-  const mouseupHandler = createMouseUpHandler({});
+  const mouseHandlers = createMouseHandlers({});
 
-  return (
-    <EditableWrapper>
-      <Editable decorate={decorate} onMouseUp={mouseupHandler} renderElement={(elProps) => <SlateElement {...elProps} />} spellCheck={false} placeholder="Please enter some text" />
-    </EditableWrapper>
-  );
+  return <Editable decorate={decorate} {...mouseHandlers} renderElement={(elProps) => <SlateElement {...elProps} />} spellCheck={false} placeholder="Please enter some text" />;
 };
 
 export default SlateEditor;

@@ -1,6 +1,4 @@
-import React, {
-  useRef, useContext, useCallback, MouseEventHandler, useEffect,
-} from 'react';
+import React, { useContext, useCallback, MouseEventHandler } from 'react';
 import {
   Editor, Range, NodeEntry, Node, Text,
 } from 'slate';
@@ -11,13 +9,17 @@ import type { Select } from '../components/highlightLeaf';
 export const SelectedTextContext = React.createContext<[string, (s: string) => void]>(null);
 export const UnDecorateListContext = React.createContext<[Range[], (r: Range[]) => void]>(null);
 
-type MouseUpHandlerFactory = ({
-  fn,
-  callback,
-}: {
+type MouseHandersFactory = (props: MouseUpHandlerFactoryProps) => {
+  onMouseUp: MouseEventHandler;
+  onMouseDown: MouseEventHandler;
+};
+
+type MouseUpHandlerFactoryProps = {
   fn?: (event: React.MouseEvent<HTMLDivElement>, editor: HighlightEditor) => void;
   callback?: (event: React.MouseEvent<HTMLDivElement>, editor: HighlightEditor) => void;
-}) => MouseEventHandler;
+};
+
+type MouseUpHandlerFactory = ({ fn, callback }: MouseUpHandlerFactoryProps) => MouseEventHandler;
 
 type DecorateFactory = ({
   preDecorate,
@@ -58,7 +60,7 @@ export const useSelection = () => {
   const selectedTextContext = useContext(SelectedTextContext);
   const unDecorateListContext = useContext(UnDecorateListContext);
   const editor = useHighlightSlate();
-  const ref = useRef<HTMLDivElement>(null);
+  // const ref = useRef<HTMLDivElement>(null);
 
   if (!selectedTextContext || !unDecorateListContext) {
     throw new Error('The `useSelection` hook must be used inside the <HighlightSlate> component\'s context.');
@@ -88,6 +90,18 @@ export const useSelection = () => {
       if (callback && typeof callback === 'function') callback(event, editor);
     },
     [editor, selectedText, setSelected, setUnDecorateList],
+  );
+
+  const mouseDownHandler = useCallback((event: React.MouseEvent<HTMLDivElement>) => {
+    console.log('event-->\n', event);
+  }, []);
+
+  const createMouseHandlers: MouseHandersFactory = useCallback(
+    (props) => ({
+      onMouseUp: createMouseUpHandler(props),
+      onMouseDown: mouseDownHandler,
+    }),
+    [createMouseUpHandler, mouseDownHandler],
   );
 
   const createDecorate: DecorateFactory = useCallback(
@@ -135,35 +149,34 @@ export const useSelection = () => {
     [selectedText, unDecorateList],
   );
 
-  /**
-   * @todo
-   * Deal with Leaf event bubble
-   */
-  useEffect(() => {
-    if (!ref.current) return () => {};
+  // /**
+  //  * @todo
+  //  * Deal with Leaf event bubble
+  //  */
+  // useEffect(() => {
+  //   if (!ref.current) return () => {};
 
-    const { current: node } = ref;
+  //   const { current: node } = ref;
 
-    const mouseDownHandler = (event: MouseEvent) => {
-      console.log('event-->\n', event);
-    };
+  //   const mouseDownHandler = (event: MouseEvent) => {
+  //     console.log('event-->\n', event);
+  //   };
 
-    node.addEventListener('mousedown', mouseDownHandler, false);
+  //   node.addEventListener('mousedown', mouseDownHandler, false);
 
-    return () => {
-      node.removeEventListener('mousedown', mouseDownHandler, false);
-    };
-  }, []);
+  //   return () => {
+  //     node.removeEventListener('mousedown', mouseDownHandler, false);
+  //   };
+  // }, []);
 
-  const EditableWrapper = ({ children }: { children: React.ReactNode }) => (
-    <div id="Editable-Wrapper" ref={ref}>
-      {children}
-    </div>
-  );
+  // const EditableWrapper = ({ children }: { children: React.ReactNode }) => (
+  //   <div id="Editable-Wrapper" ref={ref}>
+  //     {children}
+  //   </div>
+  // );
 
   return {
-    createMouseUpHandler,
     createDecorate,
-    EditableWrapper,
+    createMouseHandlers,
   };
 };
