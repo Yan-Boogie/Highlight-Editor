@@ -1,9 +1,9 @@
 import { useMemo, useState } from 'react';
 import { createEditor, Descendant } from 'slate';
-import { Slate, withReact, Editable } from 'slate-react';
+import { Slate, withReact } from 'slate-react';
 import { withHistory } from 'slate-history';
-import {} from '@src/index';
-import SlateElement from '../components/slateElement';
+import { HighlightSlate } from 'skyeye-highlight-editor';
+import SlateEditor from '../components/slateEditor';
 
 const initialValue: Descendant[] = [
   {
@@ -17,13 +17,11 @@ const Home = () => {
   const editor = useMemo(() => withHistory(withReact(createEditor())), []);
 
   return (
-    <Slate editor={editor} value={value} onChange={(v) => setValue(v)}>
-      <Editable
-        renderElement={(elProps) => <SlateElement {...elProps} />}
-        spellCheck={false}
-        placeholder="Please enter some text"
-      />
-    </Slate>
+    <HighlightSlate>
+      <Slate editor={editor} value={value} onChange={(v) => setValue(v)}>
+        <SlateEditor />
+      </Slate>
+    </HighlightSlate>
   );
 };
 

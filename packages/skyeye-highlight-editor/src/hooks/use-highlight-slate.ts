@@ -5,12 +5,7 @@ import { useSlate } from 'slate-react';
 
 export type HighlightEditor = BaseEditor & ReactEditor & HistoryEditor;
 
-const isHighlightEditor = (editor: any): editor is HighlightEditor => 'insertData' in editor &&
-  'setFragmentData' in editor &&
-  'hasRange' in editor &&
-  'history' in editor &&
-  'undo' in editor &&
-  'redo' in editor;
+const isHighlightEditor = (editor: any): editor is HighlightEditor => 'insertData' in editor && 'setFragmentData' in editor && 'history' in editor && 'undo' in editor && 'redo' in editor;
 
 export const useHighlightSlate = () => {
   const editor = useSlate();

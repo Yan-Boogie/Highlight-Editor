@@ -49,7 +49,7 @@
               }
             ],
             "indent": ["error", 2],
-            "max-len": ["error", 120],
+            "max-len": ["warn", 200],
             "no-spaced-func": "off",
             "no-async-promise-executor": "off",
             "no-extra-boolean-cast": "off",

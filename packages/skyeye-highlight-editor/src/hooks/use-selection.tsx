@@ -11,15 +11,21 @@ import type { Select } from '../components/highlightLeaf';
 export const SelectedTextContext = React.createContext<[string, (s: string) => void]>(null);
 export const UnDecorateListContext = React.createContext<[Range[], (r: Range[]) => void]>(null);
 
-type MouseUpHandlerFactory = (
-  fn?: (event: React.MouseEvent<HTMLDivElement>, editor: HighlightEditor) => void,
-  callback?: (event: React.MouseEvent<HTMLDivElement>, editor: HighlightEditor) => void
-) => MouseEventHandler;
+type MouseUpHandlerFactory = ({
+  fn,
+  callback,
+}: {
+  fn?: (event: React.MouseEvent<HTMLDivElement>, editor: HighlightEditor) => void;
+  callback?: (event: React.MouseEvent<HTMLDivElement>, editor: HighlightEditor) => void;
+}) => MouseEventHandler;
 
-type DecorateFactory = (
-  preDecorate?: (entry: NodeEntry<Node>) => DecorateRange[],
-  comparer?: (preRanges: DecorateRange[], ranges: DecorateSelectRange[]) => DecorateRange[]
-) => (entry: NodeEntry<Node>) => DecorateRange[];
+type DecorateFactory = ({
+  preDecorate,
+  comparer,
+}: {
+  preDecorate?: (entry: NodeEntry<Node>) => DecorateRange[];
+  comparer?: (preRanges: DecorateRange[], ranges: DecorateSelectRange[]) => DecorateRange[];
+}) => (entry: NodeEntry<Node>) => DecorateRange[];
 
 type DecorateRange = Range & {
   [K: string]: any;
@@ -29,10 +35,7 @@ type DecorateSelectRange = Range & {
   select: Select;
 };
 
-const defaultComparer: (preRanges: DecorateRange[], ranges: DecorateSelectRange[]) => DecorateRange[] = (
-  preRanges,
-  ranges,
-) => {
+const defaultComparer: (preRanges: DecorateRange[], ranges: DecorateSelectRange[]) => DecorateRange[] = (preRanges, ranges) => {
   const getRangeString = (range: DecorateRange): string => {
     const { anchor, focus } = range;
 
@@ -65,7 +68,7 @@ export const useSelection = () => {
   const [unDecorateList, setUnDecorateList] = unDecorateListContext;
 
   const createMouseUpHandler: MouseUpHandlerFactory = useCallback(
-    (fn, callback) => (event: React.MouseEvent<HTMLDivElement>) => {
+    ({ fn, callback }) => (event: React.MouseEvent<HTMLDivElement>) => {
       if (fn && typeof fn === 'function') fn(event, editor);
 
       const { selection } = editor;
@@ -76,8 +79,8 @@ export const useSelection = () => {
       if (selected === selectedText) return;
 
       /**
-       * Reset 'unDecorateList' if re-selected
-       */
+         * Reset 'unDecorateList' if re-selected
+         */
       setUnDecorateList([]);
 
       setSelected(selected);
@@ -88,7 +91,7 @@ export const useSelection = () => {
   );
 
   const createDecorate: DecorateFactory = useCallback(
-    (preDecorate, comparer) => (entry) => {
+    ({ preDecorate, comparer }) => (entry) => {
       const preRanges: DecorateRange[] = preDecorate && typeof preDecorate === 'function' ? preDecorate(entry) : [];
       const ranges: DecorateSelectRange[] = [];
       const [node, path] = entry;
@@ -99,8 +102,8 @@ export const useSelection = () => {
         let offset = 0;
 
         /**
-         * Insert leaf between two 'parts'
-         */
+           * Insert leaf between two 'parts'
+           */
         parts.forEach((part, i) => {
           if (i !== 0) {
             const range: Range = {
@@ -127,9 +130,7 @@ export const useSelection = () => {
         });
       }
 
-      return comparer && typeof comparer === 'function'
-        ? comparer(preRanges, ranges)
-        : defaultComparer(preRanges, ranges);
+      return comparer && typeof comparer === 'function' ? comparer(preRanges, ranges) : defaultComparer(preRanges, ranges);
     },
     [selectedText, unDecorateList],
   );

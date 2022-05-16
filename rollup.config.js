@@ -8,7 +8,7 @@ import typescript from 'rollup-plugin-typescript2';
 import { terser } from 'rollup-plugin-terser';
 import { startCase } from 'lodash';
 
-import Source from './package.json';
+import SkyeyeHighlighEditor from './packages/skyeye-highlight-editor/package.json';
 
 function configure(pkg, env, target) {
   const isProd = env === 'production';
@@ -16,9 +16,7 @@ function configure(pkg, env, target) {
   const isModule = target === 'module';
   const isCommonJs = target === 'cjs';
   const input = `packages/${pkg.name}/src/index.ts`;
-  const dependencies = []
-    .concat(pkg.dependencies ? Object.keys(pkg.dependencies) : [])
-    .concat(pkg.peerDependencies ? Object.keys(pkg.peerDependencies) : []);
+  const dependencies = [].concat(pkg.dependencies ? Object.keys(pkg.dependencies) : []).concat(pkg.peerDependencies ? Object.keys(pkg.peerDependencies) : []);
 
   const onwarn = (warning) => {
     console.warn(`(!) ${warning.message}`); // eslint-disable-line no-console
@@ -150,4 +148,4 @@ function factory(pkg, options = {}) {
  * Config.
  */
 
-export default [...factory(Source)];
+export default [...factory(SkyeyeHighlighEditor)];
