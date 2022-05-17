@@ -1,11 +1,3 @@
-import type { BaseText } from 'slate';
+import type { HighlightLeafType } from 'skyeye-highlight-editor';
 
-export type CustomText =
-  | BaseText
-  | {
-    highlighted?: boolean;
-    select?: Select;
-    text: string;
-  };
-
-export type Select = 'selected' | 'deSelected';
+export type CustomText = HighlightLeafType;

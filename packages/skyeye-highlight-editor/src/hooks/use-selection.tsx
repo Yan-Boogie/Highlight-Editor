@@ -60,7 +60,6 @@ export const useSelection = () => {
   const selectedTextContext = useContext(SelectedTextContext);
   const unDecorateListContext = useContext(UnDecorateListContext);
   const editor = useHighlightSlate();
-  // const ref = useRef<HTMLDivElement>(null);
 
   if (!selectedTextContext || !unDecorateListContext) {
     throw new Error('The `useSelection` hook must be used inside the <HighlightSlate> component\'s context.');

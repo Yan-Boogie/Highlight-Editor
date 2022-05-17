@@ -1,9 +1,9 @@
 import React from 'react';
-import type { Text } from 'slate';
+import type { BaseText } from 'slate';
 import { RenderLeafProps } from 'slate-react';
 
-export type Select = 'SELECTED' | 'DESELECTED';
-export type HighlightLeafType = Text & {
+export type Select = 'SELECTED' | 'DESELECTED' | null;
+export type HighlightLeafType = BaseText & {
   select: Select;
 };
 
@@ -14,24 +14,20 @@ const wrapperClassNameMapping = {
   DESELECTED: 'highlight-leaf-deselected',
 };
 
-export interface IHighlightLeaf extends RenderLeafProps {
-  children: (leafProps: Partial<RenderLeafProps>) => React.ReactNode;
+export interface IHighlightLeaf extends Pick<RenderLeafProps, 'leaf'> {
+  children: (leaf: HighlightLeafType) => JSX.Element;
 }
 
 export const HighlightLeaf = (props: IHighlightLeaf) => {
-  const { attributes, children, leaf } = props;
+  const { children, leaf } = props;
 
   if (!isHighlightLeaf(leaf)) {
     throw new Error('The leaf prop passed to <HighlightLeaf> must be HighlightLeaf type.');
   }
 
-  if (!leaf.select) {
-    return children({ leaf, attributes });
+  if (!leaf.select || leaf.select === 'DESELECTED') {
+    return children(leaf);
   }
 
-  return (
-    <span {...attributes} className={wrapperClassNameMapping[`${leaf.select}`]}>
-      {children({ leaf })}
-    </span>
-  );
+  return <span className={wrapperClassNameMapping[`${leaf.select}`]}>{children(leaf)}</span>;
 };

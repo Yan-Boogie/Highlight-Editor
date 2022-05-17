@@ -8,7 +8,7 @@ import SlateEditor from '../components/slateEditor';
 const initialValue: Descendant[] = [
   {
     type: 'PARAGRAPH',
-    children: [{ text: '' }],
+    children: [{ text: '', select: null }],
   },
 ];
 
