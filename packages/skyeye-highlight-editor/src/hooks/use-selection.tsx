@@ -5,9 +5,10 @@ import {
 import { ReactEditor } from 'slate-react';
 import { useHighlightSlate, HighlightEditor } from './use-highlight-slate';
 import type { Select } from '../components/highlightLeaf';
+import { wrapperClassNameMapping } from '../components/highlightLeaf';
 
-export const SelectedTextContext = React.createContext<[string, (s: string) => void]>(null);
-export const UnDecorateListContext = React.createContext<[Range[], (r: Range[]) => void]>(null);
+export const SelectedTextContext = React.createContext<[string, React.Dispatch<React.SetStateAction<string>>]>(null);
+export const UnDecorateListContext = React.createContext<[Range[], React.Dispatch<React.SetStateAction<Range[]>>]>(null);
 
 type MouseHandersFactory = (props: MouseUpHandlerFactoryProps) => {
   onMouseUp: MouseEventHandler;
@@ -91,9 +92,59 @@ export const useSelection = () => {
     [editor, selectedText, setSelected, setUnDecorateList],
   );
 
-  const mouseDownHandler = useCallback((event: React.MouseEvent<HTMLDivElement>) => {
-    console.log('event-->\n', event);
-  }, []);
+  type HTMLElementEvent<T extends HTMLElement = HTMLElement, S extends HTMLElement = HTMLElement> = React.MouseEvent<T> & { target: S };
+
+  const mouseDownHandler = useCallback(
+    (event: HTMLElementEvent<HTMLDivElement>) => {
+      const { target } = event;
+      const highlightSelectedNode = target.closest(`.${wrapperClassNameMapping.SELECTED}`);
+
+      if (!highlightSelectedNode) return;
+
+      const slateTextDomNode = highlightSelectedNode.closest('span[data-slate-node="text"]');
+
+      const leafIdxInText = Array.from(slateTextDomNode.children).findIndex((el) => highlightSelectedNode.parentNode.isSameNode(el));
+      const leafSequenceIdx = leafIdxInText % 2 ? (leafIdxInText - 1) / 2 : leafIdxInText / 2;
+
+      const slateTextNode = ReactEditor.toSlateNode(editor, slateTextDomNode);
+
+      const parts = Node.string(slateTextNode).split(selectedText);
+      const path = ReactEditor.findPath(editor, slateTextNode);
+
+      const { range } = Array.from(Array(leafSequenceIdx + 2)).reduce<{ range: Range; offset: number }>(
+        (prev, _, idx) => {
+          const newOffset = prev.offset + parts[idx].length + selectedText.length;
+
+          /**
+           * Pass directly if its first item
+           */
+          if (!idx) {
+            return {
+              range: null,
+              offset: newOffset,
+            };
+          }
+
+          const newRange = {
+            anchor: { path, offset: prev.offset - selectedText.length },
+            focus: { path, offset: prev.offset },
+          };
+
+          return {
+            range: newRange,
+            offset: newOffset,
+          };
+        },
+        {
+          range: null,
+          offset: 0,
+        },
+      );
+
+      setUnDecorateList((prev) => [...prev, range]);
+    },
+    [selectedText, editor, setUnDecorateList],
+  );
 
   const createMouseHandlers: MouseHandersFactory = useCallback(
     (props) => ({
@@ -147,32 +198,6 @@ export const useSelection = () => {
     },
     [selectedText, unDecorateList],
   );
-
-  // /**
-  //  * @todo
-  //  * Deal with Leaf event bubble
-  //  */
-  // useEffect(() => {
-  //   if (!ref.current) return () => {};
-
-  //   const { current: node } = ref;
-
-  //   const mouseDownHandler = (event: MouseEvent) => {
-  //     console.log('event-->\n', event);
-  //   };
-
-  //   node.addEventListener('mousedown', mouseDownHandler, false);
-
-  //   return () => {
-  //     node.removeEventListener('mousedown', mouseDownHandler, false);
-  //   };
-  // }, []);
-
-  // const EditableWrapper = ({ children }: { children: React.ReactNode }) => (
-  //   <div id="Editable-Wrapper" ref={ref}>
-  //     {children}
-  //   </div>
-  // );
 
   return {
     createDecorate,

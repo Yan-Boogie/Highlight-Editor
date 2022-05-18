@@ -9,7 +9,7 @@ export type HighlightLeafType = BaseText & {
 
 const isHighlightLeaf = (leaf: any): leaf is HighlightLeafType => 'select' in leaf;
 
-const wrapperClassNameMapping = {
+export const wrapperClassNameMapping = {
   SELECTED: 'highlight-leaf-selected',
   DESELECTED: 'highlight-leaf-deselected',
 };
