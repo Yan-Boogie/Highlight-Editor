@@ -16,6 +16,7 @@
     "serve": "cd ./site && next -p 3001",
     "start": "yarn serve",
     "highlight-editor:test": "yarn workspace skyeye-highlight-editor test",
+    "highlight-editor:test:watch": "yarn workspace skyeye-highlight-editor test:watch",
     "highlight-editor:test:coverage": "yarn highlight-editor:test --coverage"
   },
   "devDependencies": {

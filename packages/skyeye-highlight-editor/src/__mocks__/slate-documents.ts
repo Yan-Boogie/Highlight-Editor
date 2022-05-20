@@ -20,3 +20,8 @@ export const deselectedLeaf: HighlightLeafType = {
 export const leafNotHighlightLeafType: Omit<HighlightLeafType, 'select'> = {
   text: 'base leaf',
 };
+
+export const leafWithNullSelected: HighlightLeafType = {
+  text: 'Base text',
+  select: null,
+};
