@@ -25,9 +25,13 @@ export const HighlightLeaf = (props: IHighlightLeaf) => {
     throw new Error('The leaf prop passed to <HighlightLeaf> must be HighlightLeaf type.');
   }
 
-  if (!leaf.select || leaf.select === 'DESELECTED') {
+  if (!leaf.select) {
     return children(leaf);
   }
 
-  return <span className={wrapperClassNameMapping[`${leaf.select}`]}>{children(leaf)}</span>;
+  if (leaf.select === 'DESELECTED') {
+    return <span className={wrapperClassNameMapping.DESELECTED}>{children(leaf)}</span>;
+  }
+
+  return <span className={wrapperClassNameMapping.SELECTED}>{children(leaf)}</span>;
 };

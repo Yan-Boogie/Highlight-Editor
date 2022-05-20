@@ -14,7 +14,9 @@
     "lint:ts": "eslint . --config .eslintrc --ext .js,.ts",
     "open": "open http://localhost:3001",
     "serve": "cd ./site && next -p 3001",
-    "start": "yarn serve"
+    "start": "yarn serve",
+    "highlight-editor:test": "yarn workspace skyeye-highlight-editor test",
+    "highlight-editor:test:coverage": "yarn highlight-editor:test --coverage"
   },
   "devDependencies": {
     "@commitlint/cli": "^11.0.0",
