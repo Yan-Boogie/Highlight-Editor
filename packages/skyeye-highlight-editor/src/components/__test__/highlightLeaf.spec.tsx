@@ -1,17 +1,11 @@
 import React from 'react';
 import { render } from '../../__test-utils__';
 import { HighlightLeaf, wrapperClassNameMapping } from '../highlightLeaf';
-import {
-  selectedLeaf, deselectedLeaf, leafWithNullSelected, leafNotHighlightLeafType,
-} from '../../__mocks__/slate-documents';
+import { selectedLeaf, deselectedLeaf, leafNotHighlightLeafType } from '../../__mocks__/slate-documents';
 
-/**
- * @todo
- * Build Mock components
- */
 describe('<HighlightLeaf />', () => {
   it('should throw error if leaf has no "select" column', () => {
-    expect(() => render(<HighlightLeaf leaf={leafNotHighlightLeafType}>{jest.fn()}</HighlightLeaf>)).toThrow();
+    expect(() => render(<HighlightLeaf leaf={leafNotHighlightLeafType}>{jest.fn()}</HighlightLeaf>)).toThrowError();
   });
 
   it('should contain selected leaf wrapper className if leaf is selected', () => {
@@ -30,9 +24,7 @@ describe('<HighlightLeaf />', () => {
 
   /**
    * @todo
-   * Fix test case
+   * Build test case
    */
-  it('shoud not contain any wrapper className if leaf get\'s null in selected column', () => {
-    render(<HighlightLeaf leaf={leafWithNullSelected}>{jest.fn()}</HighlightLeaf>);
-  });
+  it('shoud not contain any wrapper className if leaf get\'s null in selected column', () => {});
 });

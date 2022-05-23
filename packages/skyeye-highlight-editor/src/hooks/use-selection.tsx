@@ -2,7 +2,7 @@ import React, { useContext, useCallback, MouseEventHandler } from 'react';
 import {
   Editor, Range, NodeEntry, Node, Text,
 } from 'slate';
-import { ReactEditor } from 'slate-react';
+import { ReactEditor, useSlate } from 'slate-react';
 import { useHighlightSlate, HighlightEditor } from './use-highlight-slate';
 import type { Select } from '../components/highlightLeaf';
 import { wrapperClassNameMapping } from '../components/highlightLeaf';
@@ -60,11 +60,12 @@ const defaultComparer: (preRanges: DecorateRange[], ranges: DecorateSelectRange[
 export const useSelection = () => {
   const selectedTextContext = useContext(SelectedTextContext);
   const unDecorateListContext = useContext(UnDecorateListContext);
-  const editor = useHighlightSlate();
 
   if (!selectedTextContext || !unDecorateListContext) {
     throw new Error('The `useSelection` hook must be used inside the <HighlightSlate> component\'s context.');
   }
+
+  const editor = useHighlightSlate(useSlate());
 
   const [selectedText, setSelected] = selectedTextContext;
   const [unDecorateList, setUnDecorateList] = unDecorateListContext;
