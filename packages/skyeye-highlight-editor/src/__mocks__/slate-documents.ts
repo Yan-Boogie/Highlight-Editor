@@ -1,9 +1,12 @@
 import type { HighlightLeafType } from '../components/highlightLeaf';
 
-export const documentWithoutSelectedLeaf = [
+export const documentWithSelectedLeaf = [
   {
     type: 'PARAGRAPH',
-    children: [{ text: 'Text paragraph without leaf', select: null }],
+    children: [
+      { text: 'Text paragraph with ', select: null },
+      { text: 'leaf', select: 'SELECTED' },
+    ],
   },
 ];
 
