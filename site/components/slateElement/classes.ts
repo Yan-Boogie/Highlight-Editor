@@ -64,4 +64,19 @@ export const classes = {
   body: css`
     ${paragraph}
   `,
+  highlighted: css`
+    border-bottom: 2px solid #11d1c4;
+    font-size: inherit;
+    font-weight: inherit;
+    line-height: inherit;
+  `,
+  editting: css`
+    position: relative;
+    border-bottom: 2px solid #11d1c4;
+    font-size: inherit;
+    font-weight: inherit;
+    line-height: inherit;
+    background-color: rgba(17, 209, 196, 0.3);
+    cursor: pointer;
+  `,
 };

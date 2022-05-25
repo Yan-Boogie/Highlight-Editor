@@ -96,6 +96,20 @@ const SlateElement: FC<IElement> = (props) => {
         </div>
       );
 
+    case 'HIGHLIGHT':
+      return (
+        <span className={classes.highlighted} {...attributes}>
+          {children}
+        </span>
+      );
+
+    case 'EDITTING':
+      return (
+        <span className={classes.editting} {...attributes}>
+          {children}
+        </span>
+      );
+
     default:
       return null;
   }
