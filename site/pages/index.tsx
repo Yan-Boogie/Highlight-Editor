@@ -14,6 +14,7 @@ const initialValue: Descendant[] = [
       { type: 'HIGHLIGHT', children: [{ text: 'HIGHLIGHTED TEXT', select: null }] },
       { text: ' and ', select: null },
       { type: 'EDITTING', children: [{ text: 'EDITTING TEXT', select: null }] },
+      { text: '. They are just for the demonstration of the blocking of selection. Try to select words overlaps them!', select: null },
     ],
   },
   {
@@ -36,13 +37,20 @@ const withInlines = (editor: CustomEditor): CustomEditor => {
 const Home = () => {
   const [value, setValue] = useState<Descendant[]>(initialValue);
   const editor = useMemo(() => withInlines(withHistory(withReact(createEditor()))), []);
+  const [text, setText] = useState<string>();
 
   return (
-    <HighlightSlate>
-      <Slate editor={editor} value={value} onChange={(v) => setValue(v)}>
-        <SlateEditor />
-      </Slate>
-    </HighlightSlate>
+    <div>
+      <p>
+        Selected Text:
+        {text}
+      </p>
+      <HighlightSlate selectedText={text} setSelectedTxt={setText}>
+        <Slate editor={editor} value={value} onChange={(v) => setValue(v)}>
+          <SlateEditor />
+        </Slate>
+      </HighlightSlate>
+    </div>
   );
 };
 

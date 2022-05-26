@@ -1,13 +1,13 @@
 import React, { useContext, useCallback, MouseEventHandler } from 'react';
 import {
-  Editor, Range, NodeEntry, Node, Text,
+  Editor, Range, NodeEntry, Node, Text, Path,
 } from 'slate';
 import { ReactEditor, useSlate } from 'slate-react';
 import { useHighlightSlate, HighlightEditor } from './use-highlight-slate';
 import type { Select } from '../components/highlightLeaf';
 import { wrapperClassNameMapping } from '../components/highlightLeaf';
 
-export const SelectedTextContext = React.createContext<[string, React.Dispatch<React.SetStateAction<string>>]>(null);
+export const SelectedTextContext = React.createContext<[string, (txt: string) => void]>(null);
 export const UnDecorateListContext = React.createContext<[Range[], React.Dispatch<React.SetStateAction<Range[]>>]>(null);
 
 type MouseHandersFactory = (props: MouseUpHandlerFactoryProps) => {
@@ -55,6 +55,18 @@ const defaultComparer: (preRanges: DecorateRange[], ranges: DecorateSelectRange[
   });
 
   return Array.from(map.values());
+};
+
+const builtInMouseUpConstraint = (editor: HighlightEditor) => {
+  const { selection } = editor;
+  const {
+    anchor: { path: aPath },
+    focus: { path: fPath },
+  } = selection;
+
+  if (!Path.equals(aPath, fPath) || Editor.string(editor, editor.selection).includes('\n')) {
+    throw new Error('Selection Constaint: Cross Paragraph Or Highlight Text Selection');
+  }
 };
 
 export const useSelection = () => {
@@ -153,7 +165,14 @@ export const useSelection = () => {
 
   const createMouseHandlers: MouseHandersFactory = useCallback(
     (props) => ({
-      onMouseUp: createMouseUpHandler(props),
+      onMouseUp: createMouseUpHandler({
+        fn: (event, e) => {
+          builtInMouseUpConstraint(e);
+
+          if ('fn' in props && typeof props.fn === 'function') props.fn(event, e);
+        },
+        callback: props.callback,
+      }),
       onMouseDown: mouseDownHandler,
     }),
     [createMouseUpHandler, mouseDownHandler],

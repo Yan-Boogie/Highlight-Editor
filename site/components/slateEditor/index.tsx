@@ -18,6 +18,10 @@ const SlateEditor = () => {
       renderLeaf={(lfProps) => <SlateLeaf {...lfProps} />}
       spellCheck={false}
       placeholder=""
+      onDOMBeforeInput={(event: InputEvent) => {
+        event.preventDefault();
+      }}
+      style={{ caretColor: '#FFF' }}
     />
   );
 };
