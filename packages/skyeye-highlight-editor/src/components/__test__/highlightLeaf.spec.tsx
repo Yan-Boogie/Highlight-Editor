@@ -1,13 +1,9 @@
 import React from 'react';
 import { render } from '../../__test-utils__';
 import { HighlightLeaf, wrapperClassNameMapping } from '../highlightLeaf';
-import { selectedLeaf, deselectedLeaf, leafNotHighlightLeafType } from '../../__mocks__/slate-documents';
+import { selectedLeaf, deselectedLeaf } from '../../__mocks__/slate-documents';
 
 describe('<HighlightLeaf />', () => {
-  it('should throw error if leaf has no "select" column', () => {
-    expect(() => render(<HighlightLeaf leaf={leafNotHighlightLeafType}>{jest.fn()}</HighlightLeaf>)).toThrowError();
-  });
-
   it('should contain selected leaf wrapper className if leaf is selected', () => {
     const { getHostHTMLElement } = render(<HighlightLeaf leaf={selectedLeaf}>{jest.fn()}</HighlightLeaf>);
     const { classList } = getHostHTMLElement();

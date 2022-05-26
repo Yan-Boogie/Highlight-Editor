@@ -5,7 +5,11 @@ import {
 } from '@testing-library/react';
 import { HighlightSlate } from '../components/highlightSlate';
 
-const Providers: FC<{ children: React.ReactNode }> = ({ children }) => <HighlightSlate>{children}</HighlightSlate>;
+const Providers: FC<{ children: React.ReactNode }> = ({ children }) => (
+  <HighlightSlate selectedText="" setSelectedTxt={jest.fn}>
+    {children}
+  </HighlightSlate>
+);
 
 export type RenderResult<Q extends Queries = typeof queries> = CoreRenderResult<Q> & {
   getHostHTMLElement<E extends Element = HTMLElement>(): E;

@@ -22,7 +22,7 @@ const SlateLeaf = (props: RenderLeafProps) => {
     <ChildrenWrapper attributes={attributes}>
       <HighlightLeaf leaf={leaf}>
         {(highlightLeaf) => {
-          if (!highlightLeaf.select || highlightLeaf.select === 'DESELECTED') return children;
+          if (!('select' in highlightLeaf) || !highlightLeaf.select || highlightLeaf.select === 'DESELECTED') return children;
 
           return <SelectedLeaf>{children}</SelectedLeaf>;
         }}

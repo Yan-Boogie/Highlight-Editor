@@ -15,17 +15,13 @@ export const wrapperClassNameMapping = {
 };
 
 export interface IHighlightLeaf extends Pick<RenderLeafProps, 'leaf'> {
-  children: (leaf: HighlightLeafType) => JSX.Element;
+  children: (leaf: HighlightLeafType | BaseText) => JSX.Element;
 }
 
 export const HighlightLeaf = (props: IHighlightLeaf) => {
   const { children, leaf } = props;
 
-  if (!isHighlightLeaf(leaf)) {
-    throw new Error('The leaf prop passed to <HighlightLeaf> must be HighlightLeaf type.');
-  }
-
-  if (!leaf.select) {
+  if (!isHighlightLeaf(leaf) || !leaf.select) {
     return children(leaf);
   }
 

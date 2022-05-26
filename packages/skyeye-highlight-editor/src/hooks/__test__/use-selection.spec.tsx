@@ -23,7 +23,7 @@ describe('useSelection()', () => {
       const editor = useMemo(() => withHistory(withReact(createEditor() as HighlightEditor)), []);
 
       return (
-        <HighlightSlate>
+        <HighlightSlate setSelectedTxt={jest.fn} selectedText="">
           <Slate editor={editor} value={value} onChange={(v) => setValue(v)}>
             {children}
           </Slate>

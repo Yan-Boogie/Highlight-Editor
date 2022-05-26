@@ -9,7 +9,7 @@ const baseText = `
 const paragraph = css`
   ${baseText}
   font-size: 18px;
-  line-height: 20px;
+  line-height: 24px;
   white-space: pre-line;
   margin: 0 0 1rem 0;
   font-weight: 400;
@@ -29,7 +29,7 @@ export const classes = {
     font-size: 40px;
     font-weight: 600;
     line-height: 40px;
-    margin-bottom: 20;
+    margin-bottom: 20px;
   `,
   h2: css`
     ${baseText}
