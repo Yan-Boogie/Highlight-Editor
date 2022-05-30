@@ -58,5 +58,8 @@
     "source-map-loader": "^0.2.4",
     "skyeye-highlight-editor": "1.0.0",
     "typescript": "^4.2.3"
+  },
+  "resolutions": {
+    "minimist": "1.2.6"
   }
 }
