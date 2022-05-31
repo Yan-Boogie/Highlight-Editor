@@ -2,5 +2,18 @@
   "packages": ["packages/*"],
   "version": "independent",
   "npmClient": "yarn",
-  "useWorkspaces": true
+  "npmClientArgs": ["--no-lockfile"],
+  "useWorkspaces": true,
+  "command": {
+    "version": {
+      "allowBranch": "master",
+      "conventionalCommits": true,
+      "ignoreChanges": ["**/__test-utils__", "**/*.spec.*", "**/*.md", "**/*.mdx"],
+      "message": "chore: release",
+      "yes": true
+    },
+    "publish": {
+      "contents": "dist"
+    }
+  }
 }

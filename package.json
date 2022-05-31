@@ -13,6 +13,7 @@
     "commit": "git-cz",
     "lint:ts": "eslint . --config .eslintrc --ext .js,.ts",
     "open": "open http://localhost:3001",
+    "release": "lerna version && yarn build:rollup && lerna publish from-package",
     "serve": "cd ./site && next -p 3001",
     "start": "yarn serve",
     "highlight-editor:test": "yarn workspace skyeye-highlight-editor test",
