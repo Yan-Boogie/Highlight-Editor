@@ -4,7 +4,7 @@
   "workspaces": [
     "packages/*"
   ],
-  "version": "1.0.0",
+  "version": "0.0.0",
   "author": "Ian Lai <ian24257587@gmail.com>",
   "license": "MIT",
   "scripts": {
