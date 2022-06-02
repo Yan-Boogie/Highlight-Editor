@@ -8,8 +8,7 @@
   "umdMin": "dist/skyeye-highlight-editor.min.js",
   "sideEffects": false,
   "files": [
-    "dist/",
-    "package.json"
+    "dist/"
   ],
   "license": "MIT",
   "scripts": {
@@ -36,5 +35,6 @@
     "slate": ">=0.55.0",
     "slate-history": ">=0.66.0",
     "slate-react": ">=0.55.0"
-  }
+  },
+  "gitHead": "4fe1a11f0624e85210010ba25df6c440569c2bbc"
 }
