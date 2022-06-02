@@ -10,17 +10,22 @@ import { wrapperClassNameMapping } from '../components/highlightLeaf';
 export const SelectedTextContext = React.createContext<[string, (txt: string) => void]>(null);
 export const UnDecorateListContext = React.createContext<[Range[], React.Dispatch<React.SetStateAction<Range[]>>]>(null);
 
-type MouseHandersFactory = (props: MouseUpHandlerFactoryProps) => {
+type MouseHandlersFactory = (props: MouseHandlersFactoryProps) => {
   onMouseUp: MouseEventHandler;
   onMouseDown: MouseEventHandler;
 };
 
-type MouseUpHandlerFactoryProps = {
-  fn?: (event: React.MouseEvent<HTMLDivElement>, editor: HighlightEditor) => void;
+type MouseHandlersFactoryProps = {
+  validator?: (builtInValidator: (editor: HighlightEditor) => void, event: React.MouseEvent<HTMLDivElement>, editor: HighlightEditor) => boolean;
   callback?: (event: React.MouseEvent<HTMLDivElement>, editor: HighlightEditor) => void;
 };
 
-type MouseUpHandlerFactory = ({ fn, callback }: MouseUpHandlerFactoryProps) => MouseEventHandler;
+type MouseUpHandlerFactoryProps = {
+  validator?: (event: React.MouseEvent<HTMLDivElement>, editor: HighlightEditor) => boolean;
+  callback?: (event: React.MouseEvent<HTMLDivElement>, editor: HighlightEditor) => void;
+};
+
+type MouseUpHandlerFactory = ({ validator, callback }: MouseUpHandlerFactoryProps) => MouseEventHandler;
 
 type DecorateFactory = ({
   preDecorate,
@@ -87,8 +92,8 @@ export const useSelection = () => {
    * Deal with "Cross element error"
    */
   const createMouseUpHandler: MouseUpHandlerFactory = useCallback(
-    ({ fn, callback }) => (event: React.MouseEvent<HTMLDivElement>) => {
-      if (fn && typeof fn === 'function') fn(event, editor);
+    ({ validator, callback }) => (event: React.MouseEvent<HTMLDivElement>) => {
+      if (validator && typeof validator === 'function' && !validator(event, editor)) return;
 
       const { selection } = editor;
       const selected = Editor.string(editor, editor.selection);
@@ -163,13 +168,21 @@ export const useSelection = () => {
     [selectedText, editor, setUnDecorateList],
   );
 
-  const createMouseHandlers: MouseHandersFactory = useCallback(
+  const createMouseHandlers: MouseHandlersFactory = useCallback(
     (props) => ({
       onMouseUp: createMouseUpHandler({
-        fn: (event, e) => {
-          builtInMouseUpConstraint(e);
+        validator: (event, e) => {
+          if ('validator' in props && typeof props.validator === 'function') {
+            return props.validator(builtInMouseUpConstraint, event, e);
+          }
 
-          if ('fn' in props && typeof props.fn === 'function') props.fn(event, e);
+          try {
+            builtInMouseUpConstraint(e);
+          } catch (err) {
+            return false;
+          }
+
+          return true;
         },
         callback: props.callback,
       }),
