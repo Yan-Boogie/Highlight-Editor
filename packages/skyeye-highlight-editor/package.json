@@ -1,12 +1,15 @@
 {
   "name": "skyeye-highlight-editor",
-  "version": "0.1.2",
+  "version": "0.1.1",
   "main": "dist/index.js",
   "module": "dist/index.es.js",
   "types": "dist/index.d.ts",
   "umd": "dist/skyeye-highlight-editor.js",
   "umdMin": "dist/skyeye-highlight-editor.min.js",
   "sideEffects": false,
+  "files": [
+    "dist/"
+  ],
   "license": "MIT",
   "scripts": {
     "test": "jest --silent",

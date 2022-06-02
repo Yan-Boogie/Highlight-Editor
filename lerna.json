@@ -11,9 +11,6 @@
       "ignoreChanges": ["**/__test-utils__", "**/*.spec.*", "**/*.md", "**/*.mdx"],
       "message": "chore: release",
       "yes": true
-    },
-    "publish": {
-      "contents": "dist"
     }
   }
 }
