@@ -7,9 +7,6 @@
   "umd": "dist/skyeye-highlight-editor.js",
   "umdMin": "dist/skyeye-highlight-editor.min.js",
   "sideEffects": false,
-  "files": [
-    "dist/"
-  ],
   "license": "MIT",
   "scripts": {
     "test": "jest --silent",
@@ -36,5 +33,5 @@
     "slate-history": ">=0.66.0",
     "slate-react": ">=0.55.0"
   },
-  "gitHead": "4fe1a11f0624e85210010ba25df6c440569c2bbc"
+  "gitHead": "1cdc3437925713b0e4276631f60e383d514ea6ff"
 }
