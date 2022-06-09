@@ -123,9 +123,9 @@ export const useSelection = () => {
 
       if (!highlightSelectedNode) return;
 
-      const slateTextDomNode = highlightSelectedNode.closest('span[data-slate-node="text"]');
+      const slateTextDomNode = highlightSelectedNode.parentNode;
 
-      const leafIdxInText = Array.from(slateTextDomNode.children).findIndex((el) => highlightSelectedNode.parentNode.isSameNode(el));
+      const leafIdxInText = Array.from(slateTextDomNode.children).findIndex((el) => highlightSelectedNode.isSameNode(el));
       const leafSequenceIdx = leafIdxInText % 2 ? (leafIdxInText - 1) / 2 : leafIdxInText / 2;
 
       const slateTextNode = ReactEditor.toSlateNode(editor, slateTextDomNode);

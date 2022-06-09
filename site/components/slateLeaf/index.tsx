@@ -3,31 +3,29 @@ import { HighlightLeaf } from 'skyeye-highlight-editor';
 import type { RenderLeafProps } from 'slate-react';
 import { classes } from './classes';
 
-const SelectedLeaf = ({ children }: { children: React.ReactNode }) => <span className={classes.selected}>{children}</span>;
+const ChildrenWrapper = (props: Pick<RenderLeafProps, 'children'>) => {
+  const { children } = props;
 
-const ChildrenWrapper = (props: Pick<RenderLeafProps, 'attributes' | 'children'>) => {
-  const { attributes, children } = props;
-
-  return (
-    <span {...attributes} style={{ position: 'relative' }}>
-      {children}
-    </span>
-  );
+  return <span style={{ position: 'relative' }}>{children}</span>;
 };
 
+const SelectedLeaf = ({ children }: { children: React.ReactNode }) => (
+  <ChildrenWrapper>
+    <span className={classes.selected}>{children}</span>
+  </ChildrenWrapper>
+);
+
 const SlateLeaf = (props: RenderLeafProps) => {
-  const { children, attributes, leaf } = props;
+  const { children, ...rest } = props;
 
   return (
-    <ChildrenWrapper attributes={attributes}>
-      <HighlightLeaf leaf={leaf}>
-        {(highlightLeaf) => {
-          if (!('select' in highlightLeaf) || !highlightLeaf.select || highlightLeaf.select === 'DESELECTED') return children;
+    <HighlightLeaf {...rest}>
+      {(highlightLeaf) => {
+        if (!('select' in highlightLeaf) || !highlightLeaf.select || highlightLeaf.select === 'DESELECTED') return <ChildrenWrapper>{children}</ChildrenWrapper>;
 
-          return <SelectedLeaf>{children}</SelectedLeaf>;
-        }}
-      </HighlightLeaf>
-    </ChildrenWrapper>
+        return <SelectedLeaf>{children}</SelectedLeaf>;
+      }}
+    </HighlightLeaf>
   );
 };
 

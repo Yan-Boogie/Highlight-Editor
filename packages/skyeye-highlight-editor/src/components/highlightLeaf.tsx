@@ -14,20 +14,28 @@ export const wrapperClassNameMapping = {
   DESELECTED: 'highlight-leaf-deselected',
 };
 
-export interface IHighlightLeaf extends Pick<RenderLeafProps, 'leaf'> {
+export interface IHighlightLeaf extends Pick<RenderLeafProps, 'leaf' | 'attributes'> {
   children: (leaf: HighlightLeafType | BaseText) => JSX.Element;
 }
 
 export const HighlightLeaf = (props: IHighlightLeaf) => {
-  const { children, leaf } = props;
+  const { children, leaf, attributes } = props;
 
   if (!isHighlightLeaf(leaf) || !leaf.select) {
-    return children(leaf);
+    return <span {...attributes}>{children(leaf)}</span>;
   }
 
   if (leaf.select === 'DESELECTED') {
-    return <span className={wrapperClassNameMapping.DESELECTED}>{children(leaf)}</span>;
+    return (
+      <span {...attributes} className={wrapperClassNameMapping.DESELECTED}>
+        {children(leaf)}
+      </span>
+    );
   }
 
-  return <span className={wrapperClassNameMapping.SELECTED}>{children(leaf)}</span>;
+  return (
+    <span {...attributes} className={wrapperClassNameMapping.SELECTED}>
+      {children(leaf)}
+    </span>
+  );
 };
