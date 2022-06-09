@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.2.1](https://github.com-handshakes/scoutAsia/SkyEye-Highlight-Editor/compare/skyeye-highlight-editor@0.2.0...skyeye-highlight-editor@0.2.1) (2022-06-09)
+
+### Bug Fixes
+
+- **src:** set HighlightLeaf wrapper with attributes props ([12f5ae7](https://github.com-handshakes/scoutAsia/SkyEye-Highlight-Editor/commit/12f5ae7c02255d924bac3d3ba7f4c196feb53708))
+
 # [0.2.0](https://github.com-handshakes/scoutAsia/SkyEye-Highlight-Editor/compare/skyeye-highlight-editor@0.1.2...skyeye-highlight-editor@0.2.0) (2022-06-02)
 
 ### Features
