@@ -87,10 +87,6 @@ export const useSelection = () => {
   const [selectedText, setSelected] = selectedTextContext;
   const [unDecorateList, setUnDecorateList] = unDecorateListContext;
 
-  /**
-   * @todo
-   * Deal with "Cross element error"
-   */
   const createMouseUpHandler: MouseUpHandlerFactory = useCallback(
     ({ validator, callback }) => (event: React.MouseEvent<HTMLDivElement>) => {
       if (validator && typeof validator === 'function' && !validator(event, editor)) return;
